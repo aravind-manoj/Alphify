@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Alphify",
+    "version": "1.0.0",
+    "description": "Alphify is a Chrome extension designed to enhance user interaction on websites featuring input fields.",
+    "icons": {
+      "64": "icons/logo64.png",
+      "128": "icons/logo128.png",
+      "256": "icons/logo256.png"
+    },
+    "background": {
+      "service_worker": "./static/js/background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["./static/js/content.js"]
+      }
+    ],
+    "action": {
+      "default_popup": "index.html"
+    },
+    "permissions": ["storage", "tabs"],
+    "author": "https://github.com/aravind-manoj/Alphify"
+  }
