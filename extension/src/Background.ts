@@ -1,7 +1,10 @@
 import Browser, { runtime } from 'webextension-polyfill';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const patternSingleQuotes = /\bify\('.*?'\)/;
 const patternDoubleQuotes = /\bify\(".*?"\)/;
+
+const GEMINI_API_KEY: any = Browser.storage.local.get("gemini_api_key");
 
 type TextMessage = {
     key: string;
@@ -17,13 +20,29 @@ type ToggleMessage = {
 let data: string = "";
 let isActive: boolean = false;
 
+const chat_history: any = [];
+
 const apiRequest = async (text: string) => {
-    const res = await fetch(`https://alphify-api.vercel.app/content?text=${text}`);
-    if (res.ok) {
-        const jsonData = await res.json();
-        return jsonData.status === "success" ? jsonData : false;
+    try{
+        var prompt = "You are Alphify, an AI text assistant designed to provide helpful, informative, and accurate responses based on user input. Your goal is to assist users by offering relevant and clear information without asking unnecessary questions or answering your own queries.\n";
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        chat_history.forEach((element: string[]) => {
+            prompt += `User: ${element[0]}\n Model: ${element[1]}\n`;
+        });
+        prompt += `User: ${text}`;
+        const output = await model.generateContent(prompt);
+        console.log(output);
+        if (output.response){
+            const response = output.response.text();
+            chat_history.push([text, response])
+            return output.response ? { success: true, message: response } : { success: false, message: "Error occurred. Please try again later." };
+        }
+        return { success: false, message: "Something went wrong. Please try again." };
+    }catch (e: any){
+        console.log(e);
+        return e.message.includes("Resource has been exhausted") ? { success: false, message: "API quota exceeded. Please try again." } : { success: false, message: "API error occurred. Please try again." };
     }
-    return false;
 };
 
 runtime.onMessage.addListener(async (message: unknown, sender, sendResponse) => {
@@ -41,18 +60,22 @@ runtime.onMessage.addListener(async (message: unknown, sender, sendResponse) => 
         if (patternDoubleQuotes.test(data)){
             let query = data.split('ify("')[1].split('"')[0].replace("\n", "");
             if (query.length > 0){
-                const api: any = await apiRequest(query);
-                if (api){
-                    return { type: "textUpdate", key: `ify("${query}")`, value: api.message }
+                const response: any = await apiRequest(query);
+                if (response.success){
+                    return { type: "textUpdate", key: `ify("${query}")`, value: response.message };
+                }else{
+                    return { type:"error", key: `ify("${query}")`, value: response.message };
                 }
             }
         }
         if (patternSingleQuotes.test(data)){
             let query = data.split("ify('")[1].split("'")[0].replace("\n", "");
             if (query.length > 0){
-                const api: any = await apiRequest(query);
-                if (api){
-                    return { type: "textUpdate", key: `ify('${query}')`, value: api.message }
+                const response: any = await apiRequest(query);
+                if (response.success){
+                    return { type: "textUpdate", key: `ify('${query}')`, value: response.message };
+                }else{
+                    return { type:"error", key: `ify('${query}')`, value: response.message };
                 }
             }
         }

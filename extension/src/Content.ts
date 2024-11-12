@@ -40,15 +40,22 @@ const sendExecute = async (event: Event) => {
         element.style.fontWeight = '600';
         element.style.color = 'white';
     }
-    runtime.sendMessage({ type: 'execute', key: "", value: text }).then((response) => {
+    runtime.sendMessage({ type: 'execute', key: "", value: text }).then((response: any) => {
         (event.target as HTMLInputElement | HTMLTextAreaElement).style.outlineColor = original;
         document.body.removeChild(element);
         let cursorPos = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart;
-        if (response){
+        if (response.type == "textUpdate"){
             let beforeCursor = text.substring(0, cursorPos!);
             let afterCursor = text.substring(cursorPos!);
             (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, (response as TextMessage).value);
             (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionEnd = text.indexOf((response as TextMessage).key) + (response as TextMessage).value.length;
+        }
+        if (response.type == "error"){
+            let beforeCursor = text.substring(0, cursorPos!);
+            let afterCursor = text.substring(cursorPos!);
+            (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, "");
+            (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionEnd = text.indexOf((response as TextMessage).key);
+            alert(response.value);
         }
     });
 }
