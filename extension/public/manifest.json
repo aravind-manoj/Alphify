@@ -20,6 +20,9 @@
     "action": {
       "default_popup": "index.html"
     },
-    "permissions": ["storage", "tabs"],
+    "side_panel": {
+      "default_path": "panel.html"
+    },
+    "permissions": ["storage", "tabs", "sidePanel"],
     "author": "https://github.com/aravind-manoj/Alphify"
   }

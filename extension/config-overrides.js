@@ -5,6 +5,7 @@ const overrideEntry = (config) => {
     main: './src/index',
     background: './src/Background',
     content: './src/Content',
+    sidepanel: './src/Panel'
   }
 
   return config
