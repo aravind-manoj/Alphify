@@ -9,13 +9,17 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.118",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/prismjs": "^1.26.5",
     "lucide-react": "^0.454.0",
     "marked": "^15.0.0",
+    "prismjs": "^1.29.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
     "react-scripts": "^5.0.1",
+    "react-syntax-highlighter": "^15.6.1",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "webextension-polyfill": "^0.12.0"
@@ -46,6 +50,8 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.279",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "@types/webextension-polyfill": "^0.12.1",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1"

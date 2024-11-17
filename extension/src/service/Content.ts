@@ -1,10 +1,7 @@
 import Browser, { runtime } from 'webextension-polyfill';
 import { patternSingleQuotes, patternDoubleQuotes, patternUndoSignal, patternRedoSignal } from './Background';
-import type { TextMessage } from './Background';
-
-interface StorageResult {
-    isActive?: boolean;
-}
+import { TextMessage } from '../types';
+import { StorageResult } from '../types';
 
 const startup = async () => {
     const result = await Browser.storage.local.get('isActive') as StorageResult;
@@ -46,7 +43,6 @@ const sendExecute = async (event: Event) => {
                 let cursorPos = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart;
                 let beforeCursor = text.substring(0, cursorPos!);
                 let afterCursor = text.substring(cursorPos!);
-                console.log(response);
                 if (response.type === "textUpdate"){
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, (response as TextMessage).value);
                     (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionEnd = text.indexOf((response as TextMessage).key) + (response as TextMessage).value.length;
