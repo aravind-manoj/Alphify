@@ -4,9 +4,10 @@ const overrideEntry = (config) => {
   config.entry = {
     main: './src/index',
     popup: './src/popup/index',
-    background: './src/service/Background',
-    content: './src/service/Content',
     sidepanel: './src/sidepanel/index',
+    settings: './src/settings/index',
+    background: './src/service/Background',
+    content: './src/service/Content'
   }
 
   return config

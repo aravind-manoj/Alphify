@@ -43,7 +43,7 @@ body {
     width: 80px;
     height: 80px;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 0.5rem rgba(100, 108, 255, 0.5));
+    filter: drop-shadow(0 0 0.5rem rgba(255, 180, 100, 0.3));
     animation: pulse 2s infinite;
 }
 
@@ -116,6 +116,13 @@ body {
     background: #1c1c1c;
 }
 
+.message.error {
+    background: #442d2d;
+    text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 .message-avatar {
     width: 30px;
     height: 30px;
@@ -135,7 +142,7 @@ body {
 
 .message-content {
     flex: 1;
-    white-space: pre-wrap;
+    white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -162,6 +169,7 @@ body {
     max-height: 200px;
     padding: 1rem 4.5rem 1rem 1rem;
     background: transparent;
+    color: #ffffff;
     border: none;
     color: inherit;
     font-family: inherit;
@@ -250,7 +258,7 @@ body {
 .loading-indicator span {
     width: 8px;
     height: 8px;
-    background: #646cff;
+    background: #f0a06b;
     border-radius: 50%;
     animation: bounce 1.4s infinite ease-in-out;
 }
@@ -361,11 +369,6 @@ body {
     }
 }
 
-.markdown-content p,
-.markdown-content pre {
-    margin: 0;
-}
-
 .code-block {
     position: relative;
     background-color: #2d2d2d;
@@ -431,4 +434,279 @@ body {
 
 .code-block div::-webkit-scrollbar-thumb:hover {
     background: #dddddd;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #1a1a1a;
+    border-bottom: 1px solid #444;
+    gap: 1rem;
+}
+
+.new-chat-button {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.new-chat-button:hover {
+    color: #fff;
+    background: #444;
+}
+
+.title-container {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+}
+
+.current-title {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background: #2a2a2a;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.current-title:hover {
+    background: #333;
+}
+
+.title-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.title-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.conversations-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.conversations-dropdown::-webkit-scrollbar {
+    width: 5px;
+}
+
+.conversations-dropdown::-webkit-scrollbar-track {
+    background: #0000001f;
+    border-radius: 4px;
+}
+
+.conversations-dropdown::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 4px;
+}
+
+.conversations-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+}
+
+.conversation-item {
+    color: #dbdbdb;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.conversation-item-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.conversation-item-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.conversation-item svg {
+    padding: 0.75rem;
+    height: 0.9rem;
+    width: 0.9rem;
+    fill: #dbdbdb;
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.conversation-item:hover svg {
+    opacity: 1;
+}
+
+.conversation-item svg:hover {
+    fill: #ffffff;
+}
+
+.conversation-item:has(svg:hover) {
+    background: #7930306e;
+}
+
+.conversation-item:hover,
+.conversation-item.active {
+    background: #333;
+}
+
+.no-conversations {
+    padding: 1rem;
+    text-align: center;
+    color: #888;
+}
+
+.model-selector {
+    position: relative;
+}
+
+.model-button {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.model-button:hover {
+    color: #fff;
+    background: #444;
+}
+
+.models-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    min-width: 240px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.model-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.model-item:hover,
+.model-item.active {
+    background: #333;
+}
+
+.model-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.model-name {
+    font-weight: 500;
+}
+
+.model-description {
+    font-size: 0.875rem;
+    color: #888;
+}
+
+.no-models {
+    padding: 1rem;
+    text-align: center;
+    color: #888;
+}
+
+.ml-2 {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    height: 1rem;
+    fill: #d0d0d0;
+}
+
+.mc-2 {
+    margin-left: 0.5rem;
+    height: 1rem;
+    fill: #d0d0d0;
+}
+
+.mr-2 {
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+    height: 1rem;
+    fill: #d0d0d0;
+}
+
+@media (prefers-color-scheme: light) {
+    .header {
+        background: #f8f8f8;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .new-chat-button,
+    .model-button {
+        color: #666;
+    }
+
+    .new-chat-button:hover,
+    .model-button:hover {
+        color: #000;
+        background: #eee;
+    }
+
+    .current-title {
+        background: #fff;
+    }
+
+    .current-title:hover {
+        background: #f5f5f5;
+    }
+
+    .conversations-dropdown,
+    .models-dropdown {
+        background: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .conversation-item:hover,
+    .conversation-item.active,
+    .model-item:hover,
+    .model-item.active {
+        background: #f5f5f5;
+    }
 }

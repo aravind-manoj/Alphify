@@ -10,8 +10,8 @@ const App = () => {
 
     useEffect(() => {
         const fetchToggleState = async () => {
-            const result = await Browser.storage.local.get('isActive') as StorageResult;
-            await Browser.runtime.sendMessage({ type: 'toggle', isActive: result.isActive });
+            const result = await Browser.storage.local.get("isActive") as StorageResult;
+            await Browser.runtime.sendMessage({ type: "toggle", isActive: result.isActive });
             setIsActive(Boolean(result.isActive));
         };
 
@@ -22,7 +22,7 @@ const App = () => {
         const newState = e.target.checked;
         setIsActive(newState);
         await Browser.storage.local.set({ isActive: newState });
-        await Browser.runtime.sendMessage({ type: 'toggle', isActive: newState });
+        await Browser.runtime.sendMessage({ type: "toggle", isActive: newState });
     };
 
     return (
@@ -33,7 +33,7 @@ const App = () => {
                         <img src="logo.svg" alt="Logo" className="logo" />
                         <h1>Alphify</h1>
                     </div>
-                    <Settings className="settingsIcon" />
+                    <Settings className="settingsIcon" onClick={() => Browser.runtime.openOptionsPage()} />
                 </div>
             </header>
             <div className="contentWrap">
@@ -54,7 +54,7 @@ const App = () => {
                 <span className="versionNumber">{VERSION}</span>
             </div>
             <footer>
-                <div className='footerContent'>
+                <div className="footerContent">
                     <h4><a href="https://alphify.vercel.app/" target="_blank" rel="noopener noreferrer">Visit our site</a></h4>
                     <a href="https://github.com/aravind-manoj/Alphify" target="_blank" rel="noopener noreferrer">
                         <Github className="githubIcon" />

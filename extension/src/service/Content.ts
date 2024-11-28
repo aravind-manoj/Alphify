@@ -18,9 +18,9 @@ const sendText = (event: Event) => {
 };
 
 const sendExecute = async (event: Event) => {
-    if ((await Browser.storage.local.get('isActive') as StorageResult).isActive){
+    if ((await Browser.storage.local.get('isActive') as StorageResult).isActive) {
         const text = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
-        if (patternSingleQuotes.test(text) || patternDoubleQuotes.test(text)){
+        if (patternSingleQuotes.test(text) || patternDoubleQuotes.test(text)) {
             const element = document.createElement('div');
             document.body.appendChild(element);
             const original = (event.target as HTMLInputElement | HTMLTextAreaElement).style.outlineColor;
@@ -43,43 +43,43 @@ const sendExecute = async (event: Event) => {
                 let cursorPos = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart;
                 let beforeCursor = text.substring(0, cursorPos!);
                 let afterCursor = text.substring(cursorPos!);
-                if (response.type === "textUpdate"){
+                if (response.type === "textUpdate") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, (response as TextMessage).value);
                     (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionEnd = text.indexOf((response as TextMessage).key) + (response as TextMessage).value.length;
                 }
-                if (response.type === "error"){
+                if (response.type === "error") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, "");
                     (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionEnd = text.indexOf((response as TextMessage).key);
                     alert(response.value);
                 }
             });
         }
-        if (patternUndoSignal.test(text)){
+        if (patternUndoSignal.test(text)) {
             runtime.sendMessage({ type: 'undo', key: "", value: text }).then((response: any) => {
                 let cursorPos = (event.target as HTMLInputElement | HTMLTextAreaElement).selectionStart;
                 let beforeCursor = text.substring(0, cursorPos!);
                 let afterCursor = text.substring(cursorPos!);
-                if (response.type === "undo"){
+                if (response.type === "undo") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (response as TextMessage).value;
                 }
-                if (response.type === "error"){
+                if (response.type === "error") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (beforeCursor + afterCursor).replace((response as TextMessage).key, "");
                     alert(response.value);
                 }
             });
         }
-        if (patternRedoSignal.test(text)){
+        if (patternRedoSignal.test(text)) {
             runtime.sendMessage({ type: 'redo', key: "", value: text }).then((response: any) => {
-                if (response.type === "redo"){
+                if (response.type === "redo") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (response as TextMessage).value;
                 }
-                if (response.type === "error"){
+                if (response.type === "error") {
                     (event.target as HTMLInputElement | HTMLTextAreaElement).value = (event.target as HTMLInputElement | HTMLTextAreaElement).value.replace((response as TextMessage).key, "");
                     alert(response.value);
                 }
             });
         }
-    }    
+    }
 }
 
 inputs.forEach(input => {
@@ -95,4 +95,4 @@ inputs.forEach(input => {
     });
 });
 
-export {};
+export { };
