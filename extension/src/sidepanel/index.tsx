@@ -144,7 +144,7 @@ const App = () => {
     const handleSendMessage = async () => {
         if ((!message.trim() && files.length === 0) || isGenerating) return;
         if (!models.find(m => m.id === currentModel)) {
-            toast.error("No model selected, Please select a model first.", { duration: 3000 });
+            toast.error("No Model Selected.", { duration: 3000 });
             return;
         }
         const messageId = Date.now().toString();
@@ -321,7 +321,7 @@ const App = () => {
             if (conversationID.current === id) {
                 handleNewChat();
             }
-            toast.success("Deleted Successfully.", { duration: 1000 });
+            toast.success("Deleted Successfully.", { duration: 1500 });
             textareaRef.current?.focus();
         }
     };
