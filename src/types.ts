@@ -33,6 +33,7 @@ export interface ChatContainerProps {
 
 export interface InputContainerProps {
     isGenerating: boolean;
+    currentModel: string;
     textareaRef: React.RefObject<HTMLTextAreaElement>;
     fileInputRef: React.RefObject<HTMLInputElement>;
     message: string;
@@ -64,4 +65,18 @@ export interface TextMessage {
 export interface ToggleMessage {
     type: string;
     isActive: boolean;
+}
+
+export interface Settings {
+    language: string;
+    theme: "light" | "dark" | "system";
+    fontFamily: string;
+    fontSize: number;
+    codeBlockTheme: string;
+    sendWithEnter: boolean;
+    enableMarkdown: boolean;
+    enableFileUploads: boolean;
+    enableAutoComplete: boolean;
+    enableSpellCheck: boolean;
+    geminiApiKey: string;
 }

@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { InputContainerProps } from '../../types';
 
 const InputContainer: React.FC<InputContainerProps> = ({
     isGenerating,
+    currentModel,
     textareaRef,
     fileInputRef,
     message,
@@ -12,6 +13,9 @@ const InputContainer: React.FC<InputContainerProps> = ({
     onSendMessage,
     onStopGeneration,
 }) => {
+
+    const fileInputIconRef = useRef<HTMLButtonElement>(null);
+
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto";
@@ -19,6 +23,18 @@ const InputContainer: React.FC<InputContainerProps> = ({
             textareaRef.current.focus();
         }
     }, [message]);
+
+    useEffect(() => {
+        if (fileInputRef.current && fileInputIconRef.current) {
+            if (currentModel === "chrome-ai") {
+                fileInputRef.current.disabled = true;
+                fileInputIconRef.current.style.display = "none";
+            } else {
+                fileInputRef.current.disabled = false;
+                fileInputIconRef.current.style.display = "block";
+            }
+        }
+    }, [currentModel]);
 
     const handleKeyDown = async (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -71,6 +87,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
                                 onChange={handleFileUpload}
                             />
                             <button
+                                ref={fileInputIconRef}
                                 className="action-button"
                                 onClick={() => fileInputRef.current?.click()}
                                 disabled={isGenerating}

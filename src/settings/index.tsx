@@ -2,20 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import toast, { Toaster } from 'react-hot-toast';
 import Browser from 'webextension-polyfill';
-
-interface Settings {
-    language: string;
-    theme: "light" | "dark" | "system";
-    fontFamily: string;
-    fontSize: number;
-    codeBlockTheme: string;
-    sendWithEnter: boolean;
-    enableMarkdown: boolean;
-    enableFileUploads: boolean;
-    enableAutoComplete: boolean;
-    enableSpellCheck: boolean;
-    geminiApiKey: string;
-}
+import type { Settings } from '../types';
 
 const sections = [
     { id: "general", label: "General", icon: "" },

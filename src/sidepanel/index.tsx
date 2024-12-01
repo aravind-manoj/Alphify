@@ -38,14 +38,6 @@ const App = () => {
         fetchModels();
     }, []);
 
-    useEffect(() => {
-        if (currentModel === "chrome-ai") {
-            if (fileInputRef.current) {
-                fileInputRef.current.disabled = true;
-            }
-        }
-    }, [currentModel]);
-
     const initDB = () => {
         db_request.current = indexedDB.open("AlphifyDB", 1);
         db_request.current.onerror = (event) => {
@@ -106,6 +98,9 @@ const App = () => {
                 }
             }
         });
+        if (models.length > 0) {
+            setCurrentModel(models[0].id);
+        }
     };
 
     const updateConversationsDB = async (updatedMessages: Message[]) => {
@@ -347,6 +342,7 @@ const App = () => {
             <ChatContainer messages={messages} />
             <InputContainer
                 isGenerating={isGenerating}
+                currentModel={currentModel}
                 textareaRef={textareaRef}
                 fileInputRef={fileInputRef}
                 message={message}
