@@ -464,6 +464,11 @@ body {
     flex: 1;
     min-width: 0;
     position: relative;
+    transition: margin-left 0.2s ease;
+}
+
+.title-container.full-width {
+    margin-left: 0;
 }
 
 .current-title {

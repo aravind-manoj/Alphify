@@ -333,6 +333,7 @@ const App = () => {
                 currentTitle={currentTitle}
                 conversations={conversations}
                 conversationID={conversationID}
+                isNewChat={isFirstMessage && messages.length === 0}
                 onNewChat={handleNewChat}
                 onSelectConversation={handleSelectConversation}
                 onSelectModel={handleSelectModel}

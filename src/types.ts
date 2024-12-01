@@ -17,6 +17,7 @@ export interface HeaderProps {
     currentTitle: string;
     conversations: Conversation[];
     conversationID: React.MutableRefObject<string>;
+    isNewChat: boolean;
     onNewChat: () => void;
     onSelectConversation: (id: string) => void;
     onSelectModel: (id: string) => void;
