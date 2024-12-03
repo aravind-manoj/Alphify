@@ -47,7 +47,7 @@ export interface InputContainerProps {
 
 export interface Message {
     id: string;
-    content: string;
+    content: { text: string, files: File[] };
     isUser: boolean;
     isStreaming?: boolean;
     error?: boolean;

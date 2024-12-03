@@ -98,9 +98,13 @@ const App = () => {
                 }
             }
         });
-        if (models.length > 0) {
-            setCurrentModel(models[0].id);
-        }
+        setModels(prev => {
+            if (prev.length > 0) {
+                setCurrentModel(prev[0].id);
+            }
+            return prev;
+        });
+
     };
 
     const updateConversationsDB = async (updatedMessages: Message[]) => {
@@ -150,9 +154,6 @@ const App = () => {
         abortControllerRef.current = new AbortController();
         userInterruptRef.current = false;
         let content = message.trim();
-        if (files.length > 0) {
-            content += "\n\nAttached files:\n" + files.map(f => `- ${f.name}`).join("\n");
-        }
         if (isFirstMessage) {
             homeSection.current?.classList.add("hidden");
             setIsFirstMessage(false);
@@ -161,17 +162,18 @@ const App = () => {
         setMessages(prev => {
             const update = [
                 ...prev,
-                { id: `user-${messageId}`, content: content, isUser: true, isStreaming: false, error: false },
-                { id: `assistant-${messageId}`, content: "", isUser: false, isStreaming: true, error: false }
+                { id: `user-${messageId}`, content: { text: content, files: files }, isUser: true, isStreaming: false, error: false },
+                { id: `assistant-${messageId}`, content: { text: "", files: [] }, isUser: false, isStreaming: true, error: false }
             ];
             updateConversationsDB(update);
             return update;
         });
         let prompt = "system: You are Alphify, an AI text assistant designed to provide helpful, informative, and accurate responses based on user input. Your goal is to assist users by offering relevant informations. Do not include prompt roles like 'user:' or 'assistant:' in response.\n\n";
-        for await (const text of messages) {
-            prompt += `${text.isUser ? "user" : "assistant"}: ${text.content}\n\n`;
-        }
+        messages.forEach((msg) => {
+            prompt += `${msg.isUser ? "user" : "assistant"}: ${msg.content.text}\n\n`;
+        });
         prompt += `user: ${content}`;
+        console.log(prompt);
         try {
             if (currentModel === "chrome-ai") {
                 const responseStream = chromeResponseStream(prompt, abortControllerRef.current.signal);
@@ -180,7 +182,7 @@ const App = () => {
                     const res = JSON.parse(chunk);
                     if (res.status) {
                         setMessages(prev => {
-                            const update = prev.map(msg => msg.id === `assistant-${messageId}` ? { ...msg, content: res.message } : msg);
+                            const update = prev.map(msg => msg.id === `assistant-${messageId}` ? { ...msg, content: { text: res.message, files: [] } } : msg);
                             updateConversationsDB(update);
                             return update;
                         });
@@ -191,7 +193,7 @@ const App = () => {
                             return update;
                         });
                         setMessages(prev => {
-                            const update = [...prev, { id: `error-${messageId}`, content: `*${res.message}*`, isUser: false, isStreaming: false, error: true }];
+                            const update = [...prev, { id: `error-${messageId}`, content: { text: `*${res.message}*`, files: [] }, isUser: false, isStreaming: false, error: true }];
                             updateConversationsDB(update);
                             return update;
                         });
@@ -206,7 +208,7 @@ const App = () => {
                     if (res.status) {
                         response += res.message;
                         setMessages(prev => {
-                            const update = prev.map(msg => msg.id === `assistant-${messageId}` ? { ...msg, content: response } : msg);
+                            const update = prev.map(msg => msg.id === `assistant-${messageId}` ? { ...msg, content: { text : response, files: [] } } : msg);
                             updateConversationsDB(update);
                             return update;
                         });
@@ -217,7 +219,7 @@ const App = () => {
                             return update;
                         });
                         setMessages(prev => {
-                            const update = [...prev, { id: `error-${messageId}`, content: `*${res.message}*`, isUser: false, isStreaming: false, error: true }];
+                            const update = [...prev, { id: `error-${messageId}`, content: { text: `*${res.message}*`, files: [] }, isUser: false, isStreaming: false, error: true }];
                             updateConversationsDB(update);
                             return update;
                         });
@@ -234,7 +236,7 @@ const App = () => {
         } catch (error) {
             if (!abortControllerRef.current?.signal.aborted) {
                 setMessages(prev => {
-                    const update = [...prev, { id: `error-${messageId}`, content: "*User interupted while processing.*", isUser: false, isStreaming: false, error: true }];
+                    const update = [...prev, { id: `error-${messageId}`, content: { text: "*User interupted while processing.*", files: [] }, isUser: false, isStreaming: false, error: true }];
                     updateConversationsDB(update);
                     return update;
                 });

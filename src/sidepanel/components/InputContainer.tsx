@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { InputContainerProps } from '../../types';
+import { SUPPORTED_TYPES, MAX_UPLOAD_SIZE } from '../../config';
+import toast from 'react-hot-toast';
 
 const InputContainer: React.FC<InputContainerProps> = ({
     isGenerating,
@@ -45,8 +47,16 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            const newFiles = Array.from(e.target.files);
-            setFiles(prev => [...prev, ...newFiles]);
+            if (Array.from(e.target.files).every(file => SUPPORTED_TYPES.includes(file.type))) {
+                if (Array.from(e.target.files).every(file => file.size <= MAX_UPLOAD_SIZE)) {
+                    const newFiles = Array.from(e.target.files);
+                    setFiles(prev => [...prev, ...newFiles]);
+                } else {
+                    toast.error("File Size Exceeded.", { duration: 3000 });
+                }
+            } else {
+                toast.error("Unsupported File Type.", { duration: 3000 });
+            }
         }
     };
 
@@ -83,7 +93,7 @@ const InputContainer: React.FC<InputContainerProps> = ({
                                 type="file"
                                 style={{ display: "none" }}
                                 multiple
-                                // accept="image/*"
+                                accept={SUPPORTED_TYPES.join(",")}
                                 onChange={handleFileUpload}
                             />
                             <button
@@ -110,18 +120,18 @@ const InputContainer: React.FC<InputContainerProps> = ({
             {files.length > 0 && (
                 <div id="file-preview-container">
                     {files.map((file, index) => (
-                        <div key={`${file.name}-${index}`} className="file-preview">
+                        <div key={`${file.name}-${index}`} className="input-file-preview">
                             {file.type.startsWith("image/") ? (
                                 <img
                                     src={URL.createObjectURL(file)}
-                                    className="file-preview-image"
+                                    className="input-file-thubmnail"
                                     alt={file.name}
                                 />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128z" /></svg>
                             )}
-                            <span className="file-preview-name">{file.name}</span>
-                            <span className="remove-file" onClick={() => removeFile(index)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg></span>
+                            <span className="input-file-preview-name" title={file.name}>{file.name}</span>
+                            <span className="input-remove-file" onClick={() => removeFile(index)}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg></span>
                         </div>
                     ))}
                 </div>

@@ -149,6 +149,42 @@ body {
     overflow: hidden;
 }
 
+.message-file-preview {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 1rem 0.2rem 0;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #242424;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.message-file-preview:hover {
+    background: #202020;
+}
+
+.message-file-preview-name {
+    flex: 1;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-file-thubmnail {
+    width: 1rem;
+    height: 1rem;
+    object-fit: contain;
+}
+
+.message-file-preview svg {
+    height: 1rem;
+    width: 1rem;
+    fill: #fff;
+}
+
 .input-container {
     border-top: 1px solid #444;
     padding: 1rem;
@@ -213,7 +249,7 @@ body {
     fill: #fff;
 }
 
-.file-preview {
+.input-file-preview {
     padding: 0.5rem;
     margin-top: 0.5rem;
     background: #333;
@@ -223,20 +259,26 @@ body {
     gap: 0.5rem;
 }
 
-.file-preview svg {
-    height: 1rem;
-    width: 1rem;
-    fill: #fff;
-}
-
-.file-preview-name {
+.input-file-preview-name {
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.remove-file svg {
+.input-file-thubmnail {
+    width: 1rem;
+    height: 1rem;
+    object-fit: contain;
+}
+
+.input-file-preview svg {
+    height: 1rem;
+    width: 1rem;
+    fill: #fff;
+}
+
+.input-remove-file svg {
     height: 1rem;
     width: 1rem;
     fill: #888;
@@ -244,7 +286,7 @@ body {
     padding: 0.2rem;
 }
 
-.remove-file svg:hover {
+.input-remove-file svg:hover {
     fill: #fff;
 }
 
@@ -364,7 +406,7 @@ body {
         background: #eee;
     }
 
-    .file-preview {
+    .input-file-preview {
         background: #eee;
     }
 }
